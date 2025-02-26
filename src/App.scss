@@ -10,6 +10,8 @@ $box-shadow-color: rgba(0, 0, 0, 0.05);
 .container {
   width: 100%;
   min-height: 100vh;
+  padding-left: 100px;
+  background: rgba(194, 230, 236, 0.2);
 }
 .mt-2 {
   margin-top: 2rem;

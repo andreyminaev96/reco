@@ -50,6 +50,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 import DoubleSortIcon from "./DoubleSortIcon";
+import AppDetailsDrawer from "./AppDetailsDrawer.tsx";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) return -1;
@@ -150,7 +151,7 @@ export default function AppInventory() {
   return (
     <Box sx={{ display: "flex", p: 2 }}>
       <Box sx={{ flex: 1, mr: 2 }}>
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 3 }}>
           App Inventory
         </Typography>
 
@@ -266,101 +267,13 @@ export default function AppInventory() {
         />
       </Box>
 
-      <Drawer
-        anchor="right"
-        open={Boolean(selectedAppId)}
-        onClose={handleCloseDrawer}
-        PaperProps={{
-          sx: { width: 360, p: 2 },
-        }}
-      >
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <IconButton onClick={handleCloseDrawer}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-
-        {loadingDetails && (
-          <Box textAlign="center" mt={2}>
-            <CircularProgress />
-          </Box>
-        )}
-        {errorDetails && (
-          <Box textAlign="center" mt={2}>
-            <Typography color="error">{errorDetails}</Typography>
-          </Box>
-        )}
-        {appDetails && !loadingDetails && !errorDetails && (
-          <>
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="center"
-              sx={{ mb: 2 }}
-            >
-              {appDetails.logo && (
-                <Avatar
-                  alt={appDetails.name}
-                  src={appDetails.logo}
-                  sx={{ width: 32, height: 32 }}
-                />
-              )}
-              <Typography variant="h6">{appDetails.name}</Typography>
-            </Stack>
-
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              Category: {appDetails.category}
-            </Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>
-              Last classification: {appDetails.lastClassification}
-            </Typography>
-
-            {appDetails.connector && (
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  mb: 2,
-                  border: "1px solid #ccc",
-                  borderRadius: 1,
-                  p: 1,
-                }}
-              >
-                <Avatar
-                  src={appDetails.connector.logo}
-                  alt={appDetails.connector.name}
-                  sx={{ width: 32, height: 32, mr: 1 }}
-                />
-                <Typography>{appDetails.connector.name}</Typography>
-              </Box>
-            )}
-
-            {appDetails.users && (
-              <>
-                <Typography variant="subtitle1">Users:</Typography>
-                {appDetails.users.map((u) => (
-                  <Stack
-                    key={u.id}
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ mb: 1 }}
-                  >
-                    {u.pic && (
-                      <Avatar
-                        src={u.pic}
-                        alt={u.name}
-                        sx={{ width: 24, height: 24 }}
-                      />
-                    )}
-                    <Typography>{u.name}</Typography>
-                  </Stack>
-                ))}
-              </>
-            )}
-          </>
-        )}
-      </Drawer>
+      <AppDetailsDrawer
+        selectedAppId={selectedAppId}
+        loadingDetails={loadingDetails}
+        errorDetails={errorDetails}
+        appDetails={appDetails}
+        handleCloseDrawer={handleCloseDrawer}
+      />
     </Box>
   );
 }
